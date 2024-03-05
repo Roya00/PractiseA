@@ -5,7 +5,7 @@ class UserManager(BaseUserManager):
     def create_user(self,email,password=None, **extra_fields):
         if not email:
             raise ValueError('Error')
-        user = self.model(email=self.normalize_email(email))
+        user = self.model(email=self.normalize_email(email),**extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -23,9 +23,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     USERNAME_FIELD = 'email'
 
-    def get_full_name(self):
-        return self.email
-
-    def __str__(self):
-        return self.email
 
